@@ -23,7 +23,7 @@ impl<E: Cascadable> CascadeError<E> {
 
 pub trait Cascadable: Sized {
     fn into_cascade(self, trace: CodeTrace) -> CascadeError<Self> {
-         CascadeError{ error: self, code_trace: vec![trace] }
+         CascadeError{ error: self, code_trace: OptVec::from(trace) }
     }
 }
 
