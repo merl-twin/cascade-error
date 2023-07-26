@@ -1,0 +1,9 @@
+[package]
+name = "cascade-error"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+opt_vec = { git = "https://github.com/merl-twin/opt_vec.git" }
