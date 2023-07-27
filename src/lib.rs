@@ -7,7 +7,7 @@ pub struct CascadeError<E: Cascadable> {
 }
 impl<E: Cascadable> CascadeError<E> {
     pub fn inner(&self) -> &E {
-        &self.inner
+        &self.error
     }
     pub fn into_inner(self) -> E {
         self.error
