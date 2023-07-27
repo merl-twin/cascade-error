@@ -6,6 +6,9 @@ pub struct CascadeError<E: Cascadable> {
     code_trace: OptVec<CodeTrace>,
 }
 impl<E: Cascadable> CascadeError<E> {
+    pub fn inner(&self) -> &E {
+        &self.inner
+    }
     pub fn into_inner(self) -> E {
         self.error
     }
