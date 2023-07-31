@@ -7,7 +7,7 @@ pub struct CascadeError<E: Cascadable> {
 }
 impl<E: Cascadable> CascadeError<E> {
     pub fn map<F,Q: Cascadable>(self, func: F, trace: CodeTrace) -> CascadeError<Q>
-    where F: FnOnce(E) -> Q
+    where F: Fn(E) -> Q
     {
         let mut code_trace = self.code_trace;
         code_trace.push(trace);
@@ -16,7 +16,7 @@ impl<E: Cascadable> CascadeError<E> {
             code_trace,
         }
     }
-    pub fn push(&mut self, trace: CodeTrace) {
+    pub fn trace(&mut self, trace: CodeTrace) {
         self.code_trace.push(trace);
     }
 }
@@ -44,7 +44,7 @@ macro_rules! cascade_new {
 macro_rules! cascade_trace {
     ( ) => {
         |mut e: CascadeError<_>| {
-            e.push(code_trace!());
+            e.trace(code_trace!());
             e
         }
     };
