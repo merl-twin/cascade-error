@@ -9,6 +9,9 @@ impl<E: Cascadable> CascadeError<E> {
     pub fn inner(&self) -> &E {
         &self.error
     }
+    pub fn get_trace(&self) -> &OptVec<CodeTrace> {
+        &self.code_trace
+    }
     pub fn into_inner(self) -> E {
         self.error
     }
