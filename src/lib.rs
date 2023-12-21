@@ -1,4 +1,4 @@
-use opt_vec::vec::OptVec;
+use opt_struct::vec::OptVec;
 
 #[derive(Debug)]
 pub struct CascadeError<E: Cascadable> {

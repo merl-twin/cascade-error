@@ -1,9 +1,20 @@
 [package]
 name = "cascade-error"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
+license = "MIT"
+readme = "README.md"
+description = "Error cascade: more information about error"
+
+repository = "https://github.com/merl-twin/cascade-error"
+homepage = "https://github.com/merl-twin/cascade-error"
+
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-opt_vec = { git = "https://github.com/merl-twin/opt_vec.git" }
+opt_struct = "0.1"
