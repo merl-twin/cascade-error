@@ -15,8 +15,9 @@ impl<E: Cascadable> CascadeError<E> {
     pub fn into_inner(self) -> E {
         self.error
     }
-    pub fn map<F,Q: Cascadable>(self, func: F, trace: CodeTrace) -> CascadeError<Q>
-    where F: Fn(E) -> Q
+    pub fn map<F, Q: Cascadable>(self, func: F, trace: CodeTrace) -> CascadeError<Q>
+    where
+        F: Fn(E) -> Q,
     {
         let mut code_trace = self.code_trace;
         code_trace.push(trace);
@@ -32,21 +33,22 @@ impl<E: Cascadable> CascadeError<E> {
 
 pub trait Cascadable: Sized {
     fn into_cascade(self, trace: CodeTrace) -> CascadeError<Self> {
-         CascadeError{ error: self, code_trace: OptVec::from(trace) }
+        CascadeError {
+            error: self,
+            code_trace: OptVec::from(trace),
+        }
     }
 }
 
 #[macro_export]
 macro_rules! cascade_new {
     ( ) => {
-        |e| { e.into_cascade(code_trace!()) }
+        |e| e.into_cascade(code_trace!())
     };
-    ( $err:expr ) => {
-        {
-            let tmp = $err;
-            tmp.into_cascade(code_trace!())
-        }
-    };
+    ( $err:expr ) => {{
+        let tmp = $err;
+        tmp.into_cascade(code_trace!())
+    }};
 }
 
 #[macro_export]
@@ -61,22 +63,25 @@ macro_rules! cascade_trace {
 
 #[macro_export]
 macro_rules! cascade {
-    ( $map:expr ) => {
-        |e: CascadeError<_>| {
-            e.map($map,code_trace!())
+    ( ) => {
+        |mut e: CascadeError<_>| {
+            e.trace(code_trace!());
+            e
         }
     };
+    ( $map:expr ) => {
+        |e: CascadeError<_>| e.map($map, code_trace!())
+    };
 }
-
 
 #[macro_export]
 macro_rules! code_trace {
     () => {
-        CodeTrace::new(file!(),line!()) 
+        CodeTrace::new(file!(), line!())
     };
 }
 
-#[derive(Clone,Copy,Eq,Ord,PartialEq,PartialOrd,Hash)]
+#[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct CodeTrace {
     file: &'static str,
     line: u32,
@@ -96,4 +101,3 @@ impl std::fmt::Display for CodeTrace {
         write!(f, "{}:{}", self.file, self.line)
     }
 }
-
